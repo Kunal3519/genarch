@@ -1,0 +1,36 @@
+[project]
+name = "genarch"
+version = "0.1.0"
+description = "GenArch: image-conditioned masked generative modelling of 3D architectural towers"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "torch>=2.3.0",
+    "torchvision>=0.18.0",
+    "numpy>=1.26.4",
+    "scipy>=1.13.0",
+    "matplotlib>=3.8.4",
+    "pillow>=10.3.0",
+    "einops>=0.8.0",
+    "tqdm>=4.66.4",
+    "tensorboard>=2.6.0",
+]
+
+[project.optional-dependencies]
+# Turntable / facade renders (script/gen_turntable_video.py only).
+viz = [
+    "pyvista>=0.44",
+    "imageio[ffmpeg]>=2.34",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["models", "options", "utils", "data"]
+
+[tool.uv]

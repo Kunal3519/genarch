@@ -1,0 +1,46 @@
+*.pyc
+__pycache__/
+.venv/
+
+# Model weights and generated output (hosted separately, see REPO_AUDIT.md)
+checkpoints/
+editing/
+generation/
+
+# TensorBoard event files (written by the trainers) and run stdout logs
+log/
+logs/
+
+# Scratch / work-in-progress renders
+tmp/
+
+# Paper sources live on Overleaf and are synced with olsync; .olauth is a session
+# cookie -- never commit. This covers the whole directory, including the figure
+# sources under paper-overleaf/figures{,_hires}/ (regenerate via script/gen_*.py).
+paper-overleaf/
+
+# Reference PDFs (third-party copyright)
+*.pdf
+
+# Figure sources. The .drawio files embed base64 renders (~25 MB); the rendered
+# PNGs that the README actually uses live in assets/.
+*.drawio
+/Architecture*.png
+/Refinement_*.png
+/eval_mask_full.npy
+
+# Local editor / tool config
+.vscode/
+.claude/
+
+.release_backup/
+
+# Internal working notes -- unpublished results, failed hypotheses, collaborator
+# and cluster details. Never ship these.
+CLAUDE.md
+PAPER_STATUS.md
+REPO_AUDIT.md
+IBQ.md
+
+# Machine-specific path overrides (utils/paths.py)
+.genarch_paths
