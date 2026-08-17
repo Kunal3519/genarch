@@ -5,7 +5,7 @@ The NewArchData tower grid: X/Y step=4 offset=2, Z step=8 offset=4.
     Y = round((y - 2) / 4) * 4 + 2
     Z = round((z - 4) / 8) * 8 + 4
 
-Single source of truth — every script / trainer that did its own copy now imports from here.
+Single source of truth, every script / trainer that did its own copy now imports from here.
 """
 from __future__ import annotations
 

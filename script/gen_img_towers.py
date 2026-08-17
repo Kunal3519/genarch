@@ -1,4 +1,4 @@
-"""Image-conditioned tower generation — side-by-side mask-transformer comparison.
+"""Image-conditioned tower generation, side-by-side mask-transformer comparison.
 
 Per tower the figure has:
     NE image  |  Ground Truth  |  mask_model_1 (Q0)  |  mask_model_2 (Q0)  |  ...
@@ -8,7 +8,7 @@ Default compares ``myarch_mask_img_patch_v2`` and ``myarch_mask_img_patch_v4`` o
 checkpoint was deleted in the May-14 cleanup); CLAUDE.md notes Δ≈-0.0005 IoU at 4x
 anyway, so the comparison stays meaningful with Q0-only generation.
 
-Decoder uses the windowed-chunk protocol (utils.vq_decode.decode_windowed) — required
+Decoder uses the windowed-chunk protocol (utils.vq_decode.decode_windowed), required
 at 4x+ compression to avoid boundary artifacts.
 """
 import os
@@ -349,7 +349,7 @@ def main(args):
                 n_int_w   = len(gt_set & pset_w)
                 n_extra_w = len(pset_w - gt_set)
                 n_miss_w  = len(gt_set - pset_w)
-                title_w = (f'{lbl} — WINDOWED  IoU={iou_w:.3f}\n'
+                title_w = (f'{lbl}, WINDOWED  IoU={iou_w:.3f}\n'
                            f'∩={n_int_w}  +{n_extra_w}  -{n_miss_w}')
                 render_diff_panel(ax_w, gt, win_pred, title_w, x_range, y_range, z_range)
 
@@ -360,7 +360,7 @@ def main(args):
                 n_int_h   = len(gt_set & pset_h)
                 n_extra_h = len(pset_h - gt_set)
                 n_miss_h  = len(gt_set - pset_h)
-                title_h = (f'{lbl} — WHOLE-SEQ  IoU={iou_h:.3f}\n'
+                title_h = (f'{lbl}, WHOLE-SEQ  IoU={iou_h:.3f}\n'
                            f'∩={n_int_h}  +{n_extra_h}  -{n_miss_h}')
                 render_diff_panel(ax_h, gt, whole_pred, title_h, x_range, y_range, z_range)
 

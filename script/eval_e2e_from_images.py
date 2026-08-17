@@ -1,17 +1,17 @@
-"""True end-to-end pipeline from RAW IMAGES (no cached features) — validation + leak check.
+"""True end-to-end pipeline from RAW IMAGES (no cached features), validation + leak check.
 
 For each tower: load its 4 PNG views, run DINOv2 ViT-L/14 forward_features LIVE (the
 exact precompute_patch_dl.py preprocessing), feed those features to the mask
 transformer, generate tokens, decode (whole-seq for IBQ), and score voxel-IoU vs GT.
 
 Two questions this answers:
-  1. LEAK CHECK — does the high IoU survive when nothing GT-derived touches generation?
+  1. LEAK CHECK, does the high IoU survive when nothing GT-derived touches generation?
      - view sweep k=0..4: use only the first k real views, ZERO the rest. k=0 = no image
        info at all (unconditional). If IoU stays high at k=0/1, something is leaking GT.
        It should degrade monotonically; k=4 should match the cached-feature full eval.
      - The ONLY GT-derived input to generate() is the token LENGTH (m_lens = n_blocks//4),
        same for every model (incl. v7). IoU itself only uses GT for scoring, never generation.
-  2. PIPELINE CHECK — recomputed-from-PNG features vs the cached .npy at k=4 should match
+  2. PIPELINE CHECK, recomputed-from-PNG features vs the cached .npy at k=4 should match
      (within sampling noise), confirming no caching/feature artifact inflates the number.
 
 Runs both checkpoints. This is also the "generate a tower from a brand-new image" path.
@@ -183,7 +183,7 @@ def main():
             for ck in args.ckpt))
 
     print('\n' + '=' * 78)
-    print(f'  END-TO-END FROM IMAGES — {args.mask_name}  ({len(picked)} unseen {args.split} towers, N={args.n_samples} temp={args.temperature})')
+    print(f'  END-TO-END FROM IMAGES, {args.mask_name}  ({len(picked)} unseen {args.split} towers, N={args.n_samples} temp={args.temperature})')
     print(f'  DINOv2 recomputed live from PNGs.  mean|recomp − cached| feature diff = {np.mean(featdiff):.2e}')
     print('=' * 78)
     for ck in args.ckpt:

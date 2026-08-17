@@ -1,7 +1,7 @@
 """
 Single-tower VIEW-ABLATION render: feed different subsets of the 4 DINOv2 views
 (zeroing the dropped views, the in-distribution drop v8.2 was trained with) and
-see how the generated tower changes — does the recessed groove get reconstructed
+see how the generated tower changes, does the recessed groove get reconstructed
 only when the groove-showing views (NW/SE) are present?
 
 View order in the feature tensor is [NE, NW, SE, SW] (idx 0,1,2,3).

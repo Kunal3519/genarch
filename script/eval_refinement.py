@@ -1,5 +1,5 @@
 """
-Full-split eval of a trained pool classifier (B or C) — reuses train_refinement
+Full-split eval of a trained pool classifier (B or C), reuses train_refinement
 functions so the feature build / IoU exactly match training. Reports best-tau Model
 IoU vs baseline A (flat vote) and the reference old-C 0.9920.
 

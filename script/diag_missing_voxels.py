@@ -5,14 +5,14 @@ classifier C past 0.992 (see project_pool_classifier_option2).
 Per val tower: GT voxel set (from motion) vs the N=16 sample POOL (count>0 voxels
 in the cached pool). "missing" = GT voxels the pool never proposed (zero-coverage).
 
-(1) DILATION upside — bucket each missing voxel by 6-conn ring distance to the pool
+(1) DILATION upside, bucket each missing voxel by 6-conn ring distance to the pool
     (1 = already in the current 1-ring dilation, 2 = a 2-ring would reach it, ...).
     % missing within k cells caps what a k-ring dilation + C can recover.
 
-(2) SYMMETRY upside — for candidate tower symmetries (mirror-X, mirror-Y, 180° about
+(2) SYMMETRY upside, for candidate tower symmetries (mirror-X, mirror-Y, 180° about
     Z, both diagonals) reflected about the GT bbox centre: (a) GT self-symmetry (how
     symmetric the tower is) and (b) % of missing voxels whose symmetric partner IS in
-    the pool (recoverable by symmetry completion — the only frozen-feature route to
+    the pool (recoverable by symmetry completion, the only frozen-feature route to
     occluded blocks). Picks the dominant symmetry per tower.
 
 CPU-only, reads the existing pool cache. Usage:
@@ -135,7 +135,7 @@ def main():
     print(f'  GT voxels total           {tot_gt:,}')
     print(f'  zero-coverage (missing)   {tot_missing:,}  = {tot_missing/tot_gt*100:.3f}% of GT')
     print(f'  pool recall (ceiling)     {1 - tot_missing/tot_gt:.4f}')
-    print(f'\n  (1) DILATION — ring distance of MISSING voxels to the pool')
+    print(f'\n  (1) DILATION, ring distance of MISSING voxels to the pool')
     print(f'      (% of the {tot_missing:,} missing; cumulative = what a k-ring reaches)')
     cum = 0
     for k in range(1, args.max_k + 1):
@@ -143,7 +143,7 @@ def main():
         print(f'      within {k} cell{"s" if k>1 else " "}   {ring[k]/tot_missing*100:5.1f}%   '
               f'(cumulative {cum/tot_missing*100:5.1f}%)')
     print(f'      beyond {args.max_k}      {ring["far"]/tot_missing*100:5.1f}%')
-    print(f'\n  (2) SYMMETRY — about GT bbox centre')
+    print(f'\n  (2) SYMMETRY, about GT bbox centre')
     print(f'      {"transform":10} {"GT self-sym":>12} {"missing partner in pool":>26}')
     for t in TRANSFORMS:
         print(f'      {t:10} {gt_sym[t]/gt_sym_den*100:11.1f}% '

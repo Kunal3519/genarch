@@ -1,7 +1,7 @@
 """
 Generic full-split voxel-IoU eval for ANY myarch mask transformer (v2..v8+).
 
-Point it at any checkpoint(s) via CLI — cond_mode
+Point it at any checkpoint(s) via CLI, cond_mode
 (plain / CLS-prefix / AdaLN variants) is auto-detected from the model's opt.txt,
 and the matching VQ tokenizer is loaded by name. No new script per version.
 
@@ -303,7 +303,7 @@ def _eval_one_ckpt(label, mask_name, ckpt_file, vq_opt, vq_model, mean, std,
 
 def _print_summary_table(results, vq_name=VQ_NAME, decode_mode=DECODE_MODE):
     print('\n' + '=' * 90)
-    print(f'  SUMMARY — voxel IoU ({vq_name} tokenizer, {decode_mode} decode)')
+    print(f'  SUMMARY, voxel IoU ({vq_name} tokenizer, {decode_mode} decode)')
     print('=' * 90)
     print(f"{'Checkpoint':<32}  {'val':>10}  {'val[:32]':>10}  {'train':>13}")
     print('-' * 90)

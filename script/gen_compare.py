@@ -2,12 +2,11 @@
 
 Layout per tower: photo | GT | model_1 | model_2 | ... | [voted]. Each 3D panel
 is a GT-vs-prediction diff (green=intersection, red=pred-only/extra,
-blue=GT-only/missed) with voxel IoU in the title. Adaptable across versions —
-pass whatever models you want via --models; no per-version script needed.
+blue=GT-only/missed) with voxel IoU in the title. Adaptable across versions, pass whatever models you want via --models; no per-version script needed.
 
 All models decode through --vq_name (windowed protocol). If --vote_model is set,
 an extra column shows that model's N-draw voxel vote (temp 0.8, keep voxels present
-in >= threshold*N samples — the deployable vote_output@0.3 recipe).
+in >= threshold*N samples, the deployable vote_output@0.3 recipe).
 
     # compare v5 vs v7, with a v7 voting column (the original v5-vs-v7 figure):
     CUDA_VISIBLE_DEVICES=4 uv run python \

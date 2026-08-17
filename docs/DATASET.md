@@ -46,7 +46,7 @@ NewArchDataConverted/           790 GB
 └── *.txt                       split files
 ```
 
-**The DINOv2 feature cache is 783 GB — 99% of the converted set.** It is
+**The DINOv2 feature cache is 783 GB, 99% of the converted set.** It is
 regenerable from the raw PNGs in a few GPU-hours, so mirror the raw release plus
 the 3.2 GB of coordinates and rebuild features locally rather than transferring
 it.

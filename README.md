@@ -8,7 +8,7 @@ Kunal Shah
 
 GenArch reconstructs an explicit 3D building from photographs. Give it four
 views of a tower and it returns the block coordinates of that tower on a voxel
-grid — in 0.23 seconds, at 0.995 IoU against ground truth.
+grid, in 0.23 seconds, at 0.995 IoU against ground truth.
 
 ![from four views to explicit 3D architecture](assets/teaser.png)
 
@@ -18,7 +18,7 @@ grid — in 0.23 seconds, at 0.995 IoU against ground truth.
 <td>
 
 A generated tower, rendered turning. The output is not a mesh or a radiance
-field — it is an ordered list of block centres on a fixed lattice, so it can be
+field. It is an ordered list of block centres on a fixed lattice, so it can be
 edited, measured and built directly.
 
 </td>
@@ -58,7 +58,7 @@ DINOv2 conditioning:
 | **GenArch** | **10** | **0.23** | **0.9950** | **85.1** | **0.0050** | **0.9975** |
 
 The baselines' decoding steps are *sequential*; GenArch's 10 are *parallel* and
-constant in tower size — hence 6.1x faster than the autoregressive baseline and
+constant in tower size, hence 6.1x faster than the autoregressive baseline and
 471x faster than the coordinate LLM, while also the most accurate.
 
 ![qualitative comparison](assets/comparison.jpg)
@@ -73,7 +73,7 @@ Each inference stage contributes:
 | IoU | 0.9802 | 0.9887 | **0.9950** |
 
 Per-view training dropout makes the model degrade gracefully as views are
-removed — 1/2/3/4 views give 0.892 / 0.961 / 0.986 / 0.995.
+removed: 1/2/3/4 views give 0.892 / 0.961 / 0.986 / 0.995.
 
 ## Installation
 
@@ -98,7 +98,7 @@ them under `checkpoints/myarch/`:
 | masked transformer | `myarch_mask_img_patch_v8_2/model/net_best_iou.tar` |
 | refinement | `pool_classifier/poolcls_c_sym_v1/best.tar` |
 
-**Dataset.** The Gen3D tower dataset — 200,000 towers, four rendered views each.
+**Dataset.** The Gen3D tower dataset: 200,000 towers, four rendered views each.
 See [`docs/DATASET.md`](docs/DATASET.md) for the layout, the grid convention and
 how to build the converted form from the raw release.
 
@@ -118,7 +118,7 @@ A checkpoint's stored `data_root` never overrides a configured one.
 
 ### From raw images
 
-Runs the full path — load four PNGs, encode them with DINOv2 live, generate,
+Runs the full path: load four PNGs, encode them with DINOv2 live, generate,
 decode, score:
 
 ```bash
@@ -139,7 +139,7 @@ per-tower timings:
 uv run python script/eval_pipeline.py --split val40k --limit 200 --gpu_id 0
 ```
 
-Expect roughly **single 0.974 / refined 0.991** on a 200-tower slice — a little
+Expect roughly **single 0.974 / refined 0.991** on a 200-tower slice, a little
 under the headline, as expected for a small sample. Drop `--limit` for the full
 number, and shard it across GPUs with `--shard_idx i --num_shards N`, then
 `--combine`.
@@ -179,7 +179,7 @@ uv run python script/train_refinement.py --name <cls> --use_image
 ## Reproducing the paper
 
 [`docs/REPRODUCE.md`](docs/REPRODUCE.md) gives every table, the command that
-produces it, and the number to expect — the main comparison, the inference-stage
+produces it, and the number to expect: the main comparison, the inference-stage
 breakdown, the view ablation, the quantizer/objective study, decoding-iteration
 and sampling sweeps, the training masking-ratio sweep, and inference timing.
 
@@ -209,11 +209,11 @@ Primary metric is voxel IoU, complemented by Chamfer distance and F-score.
 
 | path | contents |
 |---|---|
-| `models/vq/vqvae.py` | `VQVAE` — the tower tokenizer |
+| `models/vq/vqvae.py` | `VQVAE`, the tower tokenizer |
 | `models/vq/quantizer.py` | `IBQQuantize`, `QuantizeEMAReset`, `QuantizerStack` |
 | `models/vq/encdec.py`, `resnet.py` | 1D convolutional encoder / decoder |
 | `models/mask_transformer/` | `MaskTransformer` and its trainer |
-| `models/refinement.py` | `RefinementNetwork` — per-voxel keep/drop |
+| `models/refinement.py` | `RefinementNetwork`, per-voxel keep/drop |
 | `data/`, `options/`, `utils/` | datasets, CLI options, voxel + decode helpers |
 | `script/` | training, evaluation, inference, figures |
 | `script/preprocess/` | dataset conversion, feature precompute |
@@ -231,7 +231,7 @@ Primary metric is voxel IoU, complemented by Chamfer distance and F-score.
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE).
+MIT. See [`LICENSE`](LICENSE).
 
 ## Acknowledgements
 

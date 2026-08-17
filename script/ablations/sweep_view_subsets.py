@@ -1,11 +1,11 @@
 """
 For each tower, generate under ALL 15 non-empty view-subsets (zeroing dropped
-views) and measure whether the BEST subset beats all-4 — i.e. does the
+views) and measure whether the BEST subset beats all-4, i.e. does the
 "toxic-view" effect found on tower_31734 generalize across the hard tail?
 
 Also tests a NO-GT consensus selector: pick the subset whose N samples agree
 most internally (mean pairwise voxel IoU) and check if that blind choice
-recovers the oracle gain — the deployability question.
+recovers the oracle gain, the deployability question.
 
 Per tower (whole-seq IBQ decode):
   - 15 subsets x single-pass (temp 0.2)        -> IoU vs GT per subset
@@ -148,7 +148,7 @@ def combine(a, tag):
     best_any = S.max(1)
     best2 = S[:, sizes == 2].max(1)
     best3 = S[:, sizes == 3].max(1)
-    print(f'\n{"="*64}\n  view-subset sweep — {tag}  ({T} towers, single-pass t0.2)\n{"="*64}')
+    print(f'\n{"="*64}\n  view-subset sweep, {tag}  ({T} towers, single-pass t0.2)\n{"="*64}')
     print(f'  all-4 (current):        {all4.mean():.4f}')
     print(f'  best 2-view subset:     {best2.mean():.4f}   (Δ {best2.mean()-all4.mean():+.4f})')
     print(f'  best 3-view subset:     {best3.mean():.4f}   (Δ {best3.mean()-all4.mean():+.4f})')

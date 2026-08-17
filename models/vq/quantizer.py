@@ -205,7 +205,7 @@ class IBQQuantize(nn.Module):
         self.code_dim = code_dim
         self.commit = getattr(args, 'commit', 0.02)
         self.entropy_weight = getattr(args, 'ibq_entropy_weight', 0.1)
-        # learnable codebook (vs EMA buffer) — jointly optimised by backprop
+        # learnable codebook (vs EMA buffer), jointly optimised by backprop
         self.codebook = nn.Parameter(torch.randn(nb_code, code_dim) * (1.0 / np.sqrt(code_dim)))
         # CLIP-style learnable logit scale for the cosine-sim softmax (init 1/0.07)
         self.logit_scale = nn.Parameter(torch.tensor(float(np.log(1.0 / 0.07))))

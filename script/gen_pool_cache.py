@@ -1,6 +1,6 @@
 """
 Cache the N-sample candidate POOL per tower for the voxel add/delete classifier
-(option 2 — a learned replacement for the vote threshold).
+(option 2, a learned replacement for the vote threshold).
 
 For each tower in --split, draw --n_samples stochastic samples from the frozen
 mask transformer (deployment recipe: temp 0.8, whole-seq IBQ decode), snap every

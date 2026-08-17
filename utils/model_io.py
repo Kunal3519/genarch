@@ -35,7 +35,7 @@ def load_vq(checkpoints_dir, vq_name, device, dim_pose=3,
              dataset_name='myarch', ckpt_name=None, verbose=True):
     """Construct a VQVAE and load weights.
 
-    Returns (vq_model, vq_opt). Model is on CPU, not in eval mode — callers
+    Returns (vq_model, vq_opt). Model is on CPU, not in eval mode, callers
     decide when to .to(device) and .eval().
     """
     opt_path = pjoin(checkpoints_dir, dataset_name, vq_name, 'opt.txt')

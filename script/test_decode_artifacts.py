@@ -249,7 +249,7 @@ def eval_pair_on_records(records, mean, std, mask_model, vq_model, device):
     out = {'gen_windowed': [], 'gen_whole': [], 'gt_windowed': [], 'gt_whole': []}
     names = []
 
-    # ---- Generated tokens (mask transformer) — batched ----
+    # ---- Generated tokens (mask transformer), batched ----
     for batch_start in tqdm(range(0, len(records), BATCH_SIZE), desc='  gen', leave=False):
         batch = records[batch_start: batch_start + BATCH_SIZE]
         motions_b = [r[1] for r in batch]

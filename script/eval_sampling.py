@@ -1,5 +1,5 @@
 """
-Sequence-level inference eval for the MaskTransformer — one tool, many --mode s.
+Sequence-level inference eval for the MaskTransformer, one tool, many --mode s.
 
 All modes share the same core: draw N stochastic samples per tower (same image
 cond, independent temperature sampling), decode via the windowed protocol (or
@@ -81,7 +81,7 @@ def _purge_stale_shards(tag, num_shards):
             except OSError:
                 pass
 
-# Generation hyperparams — identical to compute_val_iou / eval_mask_full.
+# Generation hyperparams, identical to compute_val_iou / eval_mask_full.
 # (temperature is now a CLI arg; the others match the standard eval protocol.)
 MASK_TIMESTEPS  = 10
 MASK_COND_SCALE = 1.0
@@ -401,7 +401,7 @@ def mode_sweep_thr(args, device):
               f'best vote@{best_t}={table[N]["votes"][best_t]:.4f}')
 
     print('\n' + '=' * (30 + 9 * len(args.thresholds)))
-    print(f'  vote_output@threshold  —  {args.mask_name}/{args.ckpt}  temp={args.temperature}  n={len(records)}')
+    print(f'  vote_output@threshold, {args.mask_name}/{args.ckpt}  temp={args.temperature}  n={len(records)}')
     print('=' * (30 + 9 * len(args.thresholds)))
     hdr = f"  {'N':>4} {'single':>8} {'oracle':>8} |" + ''.join(f'{t:>8}' for t in args.thresholds)
     print(hdr)
@@ -630,7 +630,7 @@ _VOX_NEIGHBORS = [(4, 0, 0), (-4, 0, 0), (0, 4, 0), (0, -4, 0), (0, 0, 8), (0, 0
 def mode_errors(args, device):
     """Error anatomy of the voted output. Per tower: vote@thr over N samples,
     then classify FN (GT blocks the vote missed) and FP (phantom blocks) by
-    (a) pool coverage — how many of the N samples contain the voxel; FN with
+    (a) pool coverage, how many of the N samples contain the voxel; FN with
     coverage 0 appear in NO reconstruction and are unrecoverable by voting,
     (b) relative height in the tower, (c) surface vs interior (FN) / GT-attached
     vs detached (FP), (d) relative position in the token sequence (FN)."""
@@ -940,7 +940,7 @@ def mode_len_jitter(args, device):
     all sharing it? Centers: GT+offset for each --len_offsets, plus the real
     grid length-predictor when --len_pred_ckpt is given. Spreads: J0 (all at
     center, = len_sens baseline) and, for each J in --jitters, 'sym'
-    (linspace center-J..center+J) and 'up' (center-J/2..center+3J/2 — biased
+    (linspace center-J..center+J) and 'up' (center-J/2..center+3J/2, biased
     long, since the vote trims over-built tails but cannot invent blocks
     beyond the longest samples). Each sample decoded at its own length."""
     vq_model, nb_code, mean, std, model = _load_ctx(args, device)

@@ -25,7 +25,7 @@ class TrainT2MOptions(BaseOptions):
                             help="learning rate schedule (iterations). Ignored if --milestone_fractions is set.")
         self.parser.add_argument('--milestone_fractions', default=None, nargs="+", type=float,
                             help="Fractions of total training (e.g. 0.75 0.92) to drop LR. Overrides --milestones. "
-                                 "Resolved at runtime from max_epoch × iters/epoch — survives wrong iters/epoch estimates.")
+                                 "Resolved at runtime from max_epoch × iters/epoch, survives wrong iters/epoch estimates.")
         self.parser.add_argument('--warm_up_iter', default=2000, type=int, help='number of total iterations for warmup')
 
         '''Condition'''

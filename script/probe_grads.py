@@ -1,7 +1,7 @@
 """Side probe: measure CE-grad vs coord-grad norms for ANY mask-transformer ckpt.
 
 Point it at any model via --name/--ckpt (reads vq_name + cond_mode from its opt.txt).
-Single-GPU, no DDP, no checkpoint writes — safe to run alongside a live training job.
+Single-GPU, no DDP, no checkpoint writes, safe to run alongside a live training job.
 Reuses MaskTransformerTrainer._compute_losses so the math matches training exactly.
 
     CUDA_VISIBLE_DEVICES=<i> uv run python \

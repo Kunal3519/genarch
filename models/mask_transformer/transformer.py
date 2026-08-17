@@ -31,8 +31,8 @@ class SelfCrossBlock(nn.Module):
         self.drop  = nn.Dropout(dropout)
 
     def forward(self, x, mem, src_key_padding_mask=None):
-        # x:   [seqlen, B, d]  — token sequence (queries)
-        # mem: [num_patches, B, d]  — patch features (keys + values)
+        # x:   [seqlen, B, d], token sequence (queries)
+        # mem: [num_patches, B, d], patch features (keys + values)
         # need_weights=False routes through fused SDPA: without it MHA materializes
         # (B*heads, T, T) attention maps, which OOMs at block-level T (~1800).
         x2, _ = self.self_attn(x, x, x, key_padding_mask=src_key_padding_mask,
@@ -312,7 +312,7 @@ class MaskTransformer(nn.Module):
     def _trans_forward_patch(self, motion_ids, cond, padding_mask, force_mask=False):
         '''
         Cross-attention forward for image_patch mode.
-        :param cond: (b, 4, 256, 1024) — DINOv2 patch tokens, 4 views × 256 patches × 1024-dim
+        :param cond: (b, 4, 256, 1024), DINOv2 patch tokens, 4 views × 256 patches × 1024-dim
         '''
         B = motion_ids.shape[0]
 
@@ -359,7 +359,7 @@ class MaskTransformer(nn.Module):
         sequence + AdaLN-Zero modulation at the FFN driven by a pooled global cond vector.
         CFG drop zeros raw patches → patch memory, prefix tokens, AND pooled c all go to
         bias-only ("uncond") together.
-        :param cond: (B, 4, 256, 1024) — DINOv2 patch tokens
+        :param cond: (B, 4, 256, 1024), DINOv2 patch tokens
         '''
         B = motion_ids.shape[0]
 

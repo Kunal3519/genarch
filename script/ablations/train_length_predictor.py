@@ -18,7 +18,7 @@ Stages (--stage all = both):
 
 Pooling (--pool):
   mean   per-view mean over the 256 patches -> flat 4096. Plain MLP.
-         RESULT June 2026: val MAE 9.94 tok — too lossy; global mean throws
+         RESULT June 2026: val MAE 9.94 tok, too lossy; global mean throws
          away spatial extent (how much of the frame the tower fills), which
          is the main length signal.
   grid   per-view 4x4 region means over the 16x16 patch grid (16 tokens) +

@@ -56,7 +56,7 @@ NEIGH6 = np.array([[GRID[0], 0, 0], [-GRID[0], 0, 0],
                    [0, 0, GRID[2]], [0, 0, -GRID[2]]], dtype=np.int64)
 N_FEAT = 1 + 6 + 1 + 3 + 1 + 3   # own + 6 neighbours + n_present + pos(3) + height + sym(3)
 #  sym(3) = mirror-X / mirror-Y / rot180 partner vote-fraction (cols 12,13,14).
-#  pos stays at cols 8:11 (sym appended at the END) — _collate_c reads pos = vf[...,8:11].
+#  pos stays at cols 8:11 (sym appended at the END), _collate_c reads pos = vf[...,8:11].
 
 
 def tower_features(vox, count, N, mean, std):

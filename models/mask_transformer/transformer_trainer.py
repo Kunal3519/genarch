@@ -48,7 +48,7 @@ class MaskTransformerTrainer:
         return current_lr
 
 
-    # _grid_snap / _voxel_iou moved to utils/voxel.py — use grid_snap / voxel_iou directly.
+    # _grid_snap / _voxel_iou moved to utils/voxel.py, use grid_snap / voxel_iou directly.
     _grid_snap = staticmethod(grid_snap)
     _voxel_iou = staticmethod(voxel_iou)
 
@@ -60,10 +60,10 @@ class MaskTransformerTrainer:
         compute mean voxel IoU vs ground truth.
 
         decode_mode:
-          'windowed' — decode in fixed 64-block (window_tokens) chunks to match the
+          'windowed', decode in fixed 64-block (window_tokens) chunks to match the
                        VQ training window. Required for RVQ at 4x+: whole-seq decode
                        collapses due to strided-conv boundary artifacts (eval_rvq_ceiling.py).
-          'whole'    — decode the full token sequence in one forward_decoder call.
+          'whole', decode the full token sequence in one forward_decoder call.
                        Correct for IBQ, whose decoder generalises to full sequences
                        (and is its deployment decode); collapses for RVQ.
 
@@ -139,7 +139,7 @@ class MaskTransformerTrainer:
         vq = self.vq_model
         B, nb_code, ntokens = logits.shape
 
-        # Soft lookup for quantizer 0 — gradient flows logits → probs → soft_q0
+        # Soft lookup for quantizer 0, gradient flows logits → probs → soft_q0
         cb0 = vq.quantizer.layers[0].codebook  # [nb_code, code_dim]
         probs = F.softmax(logits.permute(0, 2, 1), dim=-1)  # [B, ntokens, nb_code]
         soft_q0 = probs @ cb0                               # [B, ntokens, code_dim]
@@ -179,7 +179,7 @@ class MaskTransformerTrainer:
         m_lens_blocks = m_lens.clone()   # block counts, before downsampling
         m_lens = m_lens // 4             # token counts
 
-        # Pre-encode text (skip in uncond mode — transformer ignores conditioning)
+        # Pre-encode text (skip in uncond mode, transformer ignores conditioning)
         model = self.t2m_transformer.module if hasattr(self.t2m_transformer, 'module') else self.t2m_transformer
         if getattr(model, 'cond_mode', 'text') == 'uncond':
             cond_vector = torch.zeros(len(m_lens), model.latent_dim).float().to(self.device)
@@ -230,7 +230,7 @@ class MaskTransformerTrainer:
 
         no_sync_ctx = self.t2m_transformer.no_sync() if hasattr(self.t2m_transformer, 'no_sync') else nullcontext()
         with no_sync_ctx:
-            # Fresh forward — we need separate graphs per loss for separate backwards
+            # Fresh forward, we need separate graphs per loss for separate backwards
             ce_loss_t, coord_loss_t, _ = self._compute_losses(batch_data)
 
             # CE-only grad (with the actual training weight applied)
@@ -326,7 +326,7 @@ class MaskTransformerTrainer:
         # DDP wrap (only the trainable transformer; VQ stays local in eval mode)
         use_ddp = getattr(self.opt, 'use_ddp', False)
         if use_ddp:
-            # broadcast_buffers=False: the only buffer is PositionalEncoding.pe — same on every rank
+            # broadcast_buffers=False: the only buffer is PositionalEncoding.pe, same on every rank
             # by construction (deterministic init, frozen) and stored as a non-contiguous view that
             # NCCL refuses to broadcast in-place.
             self.t2m_transformer = DDP(self.t2m_transformer,
@@ -339,7 +339,7 @@ class MaskTransformerTrainer:
             print('Single-GPU training (no DDP)')
 
         # Resolve fraction-based milestones (e.g. --milestone_fractions 0.75 0.92) into iter targets
-        # using the actual iters/epoch — survives wrong iters/epoch estimates that bit v2 and v4.
+        # using the actual iters/epoch, survives wrong iters/epoch estimates that bit v2 and v4.
         fractions = getattr(self.opt, 'milestone_fractions', None)
         if fractions:
             total_iters_plan = self.opt.max_epoch * len(train_loader)
@@ -368,7 +368,7 @@ class MaskTransformerTrainer:
                 # Warm restart: discard stale Adam moments, fresh scheduler at new LR.
                 # it is reset so the warmup ramp fires cleanly from 0 → opt.lr.
                 # For fraction-based milestones, recompute against REMAINING iters
-                # (max_epoch - epoch) × iters/epoch — initial calc used full max_epoch which
+                # (max_epoch - epoch) × iters/epoch, initial calc used full max_epoch which
                 # is wrong when resuming mid-run.
                 if fractions:
                     remaining_iters = (self.opt.max_epoch - epoch) * len(train_loader)
@@ -411,7 +411,7 @@ class MaskTransformerTrainer:
 
                 total_loss, acc, ce_loss, coord_loss = self.update(batch_data=batch)
 
-                # Diagnostic: per-loss gradient norms — runs after the normal optimizer step
+                # Diagnostic: per-loss gradient norms, runs after the normal optimizer step
                 # on the same batch, all ranks must call together (DDP). Adds ~1 extra
                 # forward + 2 extra backwards per probed step (no_sync skips NCCL all-reduce).
                 if grad_probe_every > 0 and it % grad_probe_every == 0:
@@ -477,7 +477,7 @@ class MaskTransformerTrainer:
                 best_acc = v_acc
                 self.save(pjoin(self.opt.model_dir, 'net_best_acc.tar'), epoch, it, best_acc=best_acc, best_iou=best_iou)
 
-            # Periodic IoU evaluation on fixed val towers (rank 0 only — single-batch full inference)
+            # Periodic IoU evaluation on fixed val towers (rank 0 only, single-batch full inference)
             if eval_towers is not None and epoch % eval_iou_every == 0 and self.is_main:
                 # --val_decode_mode: 'windowed' (RVQ default) | 'whole' (IBQ) | 'both'.
                 # 'both' logs windowed + whole; net_best_iou tracks the deployment

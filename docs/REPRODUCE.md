@@ -16,7 +16,7 @@ Released checkpoints used throughout:
 
 ---
 
-## Table 1 — main comparison (`tab:main`)
+## Table 1: main comparison (`tab:main`)
 
 GenArch's row, on the full 40,000-tower validation split:
 
@@ -35,10 +35,10 @@ Llama-3.2-1B emitting coordinate tokens. Both were retrained on this dataset
 with the same four-view DINOv2 conditioning; see the paper for their settings.
 
 **Runtime note.** A 6-shard full run takes a few hours. For a smoke check use
-`--limit 200`, which lands near **single 0.9735 / refined 0.9916** — slightly
+`--limit 200`, which lands near **single 0.9735 / refined 0.9916**, slightly
 under the headline, as expected for a small slice.
 
-## Table 2 — inference stages (`tab:refine`)
+## Table 2: inference stages (`tab:refine`)
 
 Same run as above; `eval_pipeline.py` prints all three columns together.
 
@@ -46,7 +46,7 @@ Same run as above; `eval_pipeline.py` prints all three columns together.
 |---|---:|---:|---:|
 | IoU | 0.9802 | 0.9887 | **0.9950** |
 
-## Table 3 — number of conditioning views (`tab:views`)
+## Table 3: number of conditioning views (`tab:views`)
 
 ```bash
 python script/ablations/ablate_views.py --n_towers 1000 --vote --gpu_id 0
@@ -60,9 +60,9 @@ Mean over all view subsets of each size, deployed pipeline (N=16 + refinement):
 
 Also reports the per-view marginals and the adjacent-vs-diagonal pair gap.
 
-## Table 4 — quantizer and objective (`tab:repr`)
+## Table 4: quantizer and objective (`tab:repr`)
 
-Three trained models, not a sweep — each row needs its own tokenizer and
+Three trained models, not a sweep. Each row needs its own tokenizer and
 transformer:
 
 | quantizer | objective | IoU |
@@ -85,7 +85,7 @@ torchrun --nproc_per_node=N script/train_transformer.py --name <run> \
 Backbone, conditioning, codebook size and token sequence are identical across
 rows; only the quantizer and objective change.
 
-## Table 5 — decoding iterations and schedule (`tab:iters`)
+## Table 5: decoding iterations and schedule (`tab:iters`)
 
 ```bash
 python script/ablations/sweep_sampling_knobs.py --sweep timesteps --gpu_id 0
@@ -93,7 +93,7 @@ python script/ablations/sweep_sampling_knobs.py --sweep schedule  --gpu_id 0
 ```
 
 400 validation towers. Refined IoU peaks at **T=10 (0.9958)** and *declines* by
-T=30 even though single-pass keeps improving — pick decoding knobs at the
+T=30 even though single-pass keeps improving. Pick decoding knobs at the
 deployed stage, not the single-pass one.
 
 | | T=8 | T=10 | T=15 | T=20 | T=30 |
@@ -104,7 +104,7 @@ deployed stage, not the single-pass one.
 
 Cosine vs linear schedule: 0.9958 vs 0.9949 refined.
 
-## Table 6 — nucleus and top-k truncation (`tab:sampling`)
+## Table 6: nucleus and top-k truncation (`tab:sampling`)
 
 ```bash
 python script/ablations/sweep_sampling_knobs.py --sweep topk_topp --gpu_id 0
@@ -113,7 +113,7 @@ python script/ablations/sweep_sampling_knobs.py --sweep topk_topp --gpu_id 0
 All settings land within ~0.0004 refined (0.9955–0.9958). The point of the table
 is that these knobs are inert; the defaults are fine.
 
-## Table 7 — training masking ratio (`tab:maskratio`)
+## Table 7: training masking ratio (`tab:maskratio`)
 
 Five matched 100-epoch training runs, evaluated on 1,000 validation towers:
 
@@ -137,7 +137,7 @@ Absolute values sit below the headline because this is a matched **100-epoch**
 budget, not the converged run; the comparison is the relative ordering, which
 holds at all three stages.
 
-**Trap:** token accuracy is *not* comparable across these arms — each grades a
+**Trap:** token accuracy is *not* comparable across these arms, because each grades a
 different task difficulty, and less masking looks better for free. Only
 downstream voxel IoU is a valid comparison.
 
@@ -166,7 +166,7 @@ coordinates, which ship with neither codebase.
 ## Things that will silently cost you accuracy
 
 - **Decode IBQ whole-sequence.** Windowed decode (`w=64`) is correct for the
-  residual-VQ tokenizer and wrong for IBQ — it costs ~0.03 IoU. The reverse is
+  residual-VQ tokenizer and wrong for IBQ, where it costs ~0.03 IoU. The reverse is
   worse: whole-sequence decode of residual VQ collapses to ~0.65.
 - **Keep `cond_scale = 1.0`.** Classifier-free guidance was swept and is
   monotonically harmful here; voting degrades about twice as fast as single-pass

@@ -167,7 +167,7 @@ if __name__ == '__main__':
                               shuffle=(val_sampler is None), sampler=val_sampler,
                               pin_memory=True)
 
-    # Build fixed eval set from 32 val towers for periodic IoU tracking (rank 0 only — runs single-batch).
+    # Build fixed eval set from 32 val towers for periodic IoU tracking (rank 0 only, runs single-batch).
     # Read directly from the underlying dataset so all ranks see the same towers regardless of sharding.
     eval_towers = None
     if opt.is_main_process:
